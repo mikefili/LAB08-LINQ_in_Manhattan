@@ -12,8 +12,8 @@ namespace LINQ
 
         static void Main(string[] args)
         {
-            
-            HandleJSON(GetJObject(dataPath));
+            List<CityClass> list = HandleJSON(GetJObject(dataPath));
+            Write(list);
         }
 
         public static JObject GetJObject(string path)
@@ -22,41 +22,60 @@ namespace LINQ
             return jObject;
         }
 
-        public static JObject HandleJSON(JObject jObject)
+        public static List<CityClass> HandleJSON(JObject jObject)
         {
-            JArray items = (JArray)jObject["features"];
-            int dataArr = items.Count;
-
-            for (int i = 0; i < dataArr; i++)
+            var list = jObject["features"];
+            List<CityClass> neighborhoods = new List<CityClass>();
+            
+            foreach (var item in list)
             {
                 CityClass city = new CityClass()
                 {
-                    Address = (string)jObject["features"][i]["properties"]["address"],
-                    City = (string)jObject["features"][i]["properties"]["city"],
-                    State = (string)jObject["features"][i]["properties"]["state"],
-                    Zip = (int)jObject["features"][i]["properties"]["zip"],
-                    Borough = (string)jObject["features"][i]["properties"]["borough"],
-                    Neighborhood = (string)jObject["features"][i]["properties"]["neighborhood"],
-                    County = (string)jObject["features"][i]["properties"]["county"]
+                    Address = (string)item["properties"]["address"],
+                    City = (string)item["properties"]["city"],
+                    State = (string)item["properties"]["state"],
+                    Zip = (int)item["properties"]["zip"],
+                    Borough = (string)item["properties"]["borough"],
+                    Neighborhood = (string)item["properties"]["neighborhood"],
+                    County = (string)item["properties"]["county"]
                 };
-                Console.WriteLine();
-                Console.WriteLine($"Address: {city.Address}");
-                Console.WriteLine($"{city.City}, {city.State} {city.Zip}");
-                Console.WriteLine($"Borough: {city.Borough}");
-                Console.WriteLine($"Neighborhood: {city.Neighborhood}");
-                Console.WriteLine($"County: {city.County}");
+                neighborhoods.Add(city);
             }
-            Console.WriteLine();
-            return jObject;
+            return neighborhoods;
         }
 
-        //static IEnumerable<string> filterWithoutNeighborhood(IEnumerable<string> items)
+        public static void Write(List<CityClass> list)
+        {
+            foreach (CityClass neighborhood in list)
+            {
+                Console.WriteLine();
+                Console.WriteLine($"Address: {neighborhood.Address}");
+                Console.WriteLine($"{neighborhood.City}, {neighborhood.State} {neighborhood.Zip}");
+                Console.WriteLine($"Borough: {neighborhood.Borough}");
+                Console.WriteLine($"Neighborhood: {neighborhood.Neighborhood}");
+                Console.WriteLine($"County: {neighborhood.County}");
+            }
+            Console.WriteLine();
+        }
+
+        public static void Write(IEnumerable<CityClass> list)
+        {
+            foreach (CityClass neighborhood in list)
+            {
+                Console.WriteLine();
+                Console.WriteLine($"Address: {neighborhood.Address}");
+                Console.WriteLine($"{neighborhood.City}, {neighborhood.State} {neighborhood.Zip}");
+                Console.WriteLine($"Borough: {neighborhood.Borough}");
+                Console.WriteLine($"Neighborhood: {neighborhood.Neighborhood}");
+                Console.WriteLine($"County: {neighborhood.County}");
+            }
+            Console.WriteLine();
+        }
+
+        //public static JObject filterWithoutNeighborhood(List<CityClass> name)
         //{
-        //    HandleJSON();
-        //    // anonymous type variable
-        //    var filterWithoutNeighborhood = from  in bestCats
-        //                       where cats.Contains("e")
-        //                       select cats;
+
         //}
+
     }
 }
