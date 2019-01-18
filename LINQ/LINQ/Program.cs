@@ -13,16 +13,16 @@ namespace LINQ
         {
             List<CityClass> list = HandleJSON(GetJObject());
 
-            Console.WriteLine("All Manhattan Neighborhoods: ");
-            Write(list);
-            Console.WriteLine("-----------------------------");
-            Console.WriteLine();
+            //Console.WriteLine("All Manhattan Neighborhoods: ");
+            //Write(list);
+            //Console.WriteLine("-----------------------------");
+            //Console.WriteLine();
 
-            IEnumerable<CityClass> nameless = RemoveNameless(list);
-            Console.WriteLine("All Named Manhattan Neighborhoods: ");
-            Write(nameless);
-            Console.WriteLine("-----------------------------");
-            Console.WriteLine();
+            //IEnumerable<CityClass> nameless = RemoveNameless(list);
+            //Console.WriteLine("All Named Manhattan Neighborhoods: ");
+            //Write(nameless);
+            //Console.WriteLine("-----------------------------");
+            //Console.WriteLine();
 
             IEnumerable<CityClass> noDuplicates = RemoveDupes(list);
             Console.WriteLine("All Manhattan Neighborhoods (No Duplicates): ");
@@ -30,9 +30,9 @@ namespace LINQ
             Console.WriteLine("-----------------------------");
             Console.WriteLine();
 
-            IEnumerable<CityClass> bothFilters = RemoveNamelessAndDupes(list);
-            Console.WriteLine("All Named Manhattan Neighborhoods (No Duplicates): ");
-            Write(bothFilters);
+            //IEnumerable<CityClass> bothFilters = RemoveNamelessAndDupes(list);
+            //Console.WriteLine("All Named Manhattan Neighborhoods (No Duplicates): ");
+            //Write(bothFilters);
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace LINQ
         /// <returns>IEnumerable list of non-duplicate neighborhoods</returns>
         public static IEnumerable<CityClass> RemoveDupes(IEnumerable<CityClass> list)
         {
-            String[] temp = new string[250];
+            String[] temp = new string[list.Count()];
             int counter = 0;
             foreach (CityClass neighborhood in list)
             {
@@ -142,7 +142,7 @@ namespace LINQ
                     neighborhood.Duplicate = true;
                 }
             }
-            IEnumerable<CityClass> noDupes = list.Where(neighborhood => neighborhood.Neighborhood.Length != 0);
+            IEnumerable<CityClass> noDupes = list.Where(neighborhood => neighborhood.Neighborhood.Length == 0);
             return noDupes;
         }
 
@@ -153,7 +153,7 @@ namespace LINQ
         /// <returns>IEnumerable list of named, non-duplicate neighborhoods</returns>
         public static IEnumerable<CityClass> RemoveNamelessAndDupes(IEnumerable<CityClass> list)
         {
-            String[] temp = new string[250];
+            String[] temp = new string[list.Count()];
             int counter = 0;
             foreach (CityClass neighborhood in list)
             {
