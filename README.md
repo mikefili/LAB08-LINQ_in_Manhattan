@@ -6,8 +6,10 @@ Use NewtonSoft to extract all the neighborhoods of Manhattan from JSON data. Pro
 ## Instructions
 - Create a JSON object (JObject) that contains all the lines of the JSON file
 - Parse that JSON object. For each neighborhood in the json object, create a new Neighborhood object from the Neighborhood class, and set the properties of the object to the properties of the json neighborhood. Put each new neighborhood into a List.
-- Filter the list using LINQ or Lamda statements.
-- Print the list of neighborhoods using Console.WriteLine().
+- Output all of the neighborhoods in this data list
+- Filter out all the neighborhoods that do not have any names
+- Remove the Duplicates
+- Rewrite the queries from above, and consolidate all into one single query.
 
 ## Visual
 ### All Neighborhoods
