@@ -13,5 +13,6 @@ namespace LINQ.classes
         public string Borough { get; set; }
         public string Neighborhood { get; set; }
         public string County { get; set; }
+        public bool Duplicate { get; set; } = false;
     }
 }

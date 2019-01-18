@@ -13,6 +13,7 @@ namespace LINQ
         {
             List<CityClass> list = HandleJSON(GetJObject());
             IEnumerable<CityClass> nameless = FilterNameless(list);
+            IEnumerable<CityClass> noDuplicates = RemoveDupes(list);
             Console.WriteLine("All Manhattan Neighborhoods: ");
             Write(list);
             Console.WriteLine("-----------------------------");
@@ -20,6 +21,11 @@ namespace LINQ
             Console.WriteLine("All Nameless Manhattan Neighborhoods: ");
             Console.WriteLine();
             Write(nameless);
+            Console.WriteLine("-----------------------------");
+            Console.WriteLine();
+            Console.WriteLine("All Manhattan Neighborhoods (No Duplicates): ");
+            Console.WriteLine();
+            Write(noDuplicates);
         }
 
         public static JObject GetJObject()
@@ -86,5 +92,26 @@ namespace LINQ
             return noNames;
         }
 
+        public static IEnumerable<CityClass> RemoveDupes(IEnumerable<CityClass> list)
+        {
+            String[] temp = new string[250];
+            int counter = 0;
+            foreach (CityClass neighborhood in list)
+            {
+                if (!temp.Contains(neighborhood.Neighborhood))
+                {
+                    counter++;
+                    temp[counter] = neighborhood.Neighborhood;
+                }
+                else
+                {
+                    neighborhood.Duplicate = true;
+                }
+            }
+            IEnumerable<CityClass> noDupes = from neighborhood in list
+                                             where neighborhood.Duplicate == false
+                                             select neighborhood;
+            return noDupes;
+        }
     }
 }
