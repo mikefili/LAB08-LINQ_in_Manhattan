@@ -12,28 +12,47 @@ namespace LINQ
         static void Main(string[] args)
         {
             List<CityClass> list = HandleJSON(GetJObject());
-            IEnumerable<CityClass> nameless = FilterNameless(list);
-            IEnumerable<CityClass> noDuplicates = RemoveDupes(list);
+            
             Console.WriteLine("All Manhattan Neighborhoods: ");
             Write(list);
             Console.WriteLine("-----------------------------");
             Console.WriteLine();
-            Console.WriteLine("All Nameless Manhattan Neighborhoods: ");
+
+            IEnumerable<CityClass> nameless = RemoveNameless(list);
+            Console.WriteLine("All Named Manhattan Neighborhoods: ");
             Console.WriteLine();
             Write(nameless);
             Console.WriteLine("-----------------------------");
             Console.WriteLine();
+
+            IEnumerable<CityClass> noDuplicates = RemoveDupes(list);
             Console.WriteLine("All Manhattan Neighborhoods (No Duplicates): ");
+            Console.WriteLine();
+            Write(noDuplicates);
+            Console.WriteLine("-----------------------------");
+            Console.WriteLine();
+
+            IEnumerable<CityClass> bothFilters = RemoveNamelessAndDupes(list);
+            Console.WriteLine("All Named Manhattan Neighborhoods (No Duplicates): ");
             Console.WriteLine();
             Write(noDuplicates);
         }
 
+        /// <summary>
+        /// Generate JObject with NewtonSoft
+        /// </summary>
+        /// <returns>JObject</returns>
         public static JObject GetJObject()
         {
             JObject jObject = JObject.Parse(File.ReadAllText(@"C:/Users/Owner/codefellows/401/labs/Lab08-LINQ_In_Manhattan/data.json"));
             return jObject;
         }
 
+        /// <summary>
+        /// Generate list of neighborhoods from JSON object
+        /// </summary>
+        /// <param name="jObject">jObject</param>
+        /// <returns>List of neighborhood objects</returns>
         public static List<CityClass> HandleJSON(JObject jObject)
         {
             var list = jObject["features"];
@@ -56,6 +75,10 @@ namespace LINQ
             return neighborhoods;
         }
 
+        /// <summary>
+        /// Writes out formatted neighborhood addresses
+        /// </summary>
+        /// <param name="list">List of neighborhoods</param>
         public static void Write(List<CityClass> list)
         {
             foreach (CityClass neighborhood in list)
@@ -70,6 +93,10 @@ namespace LINQ
             Console.WriteLine();
         }
 
+        /// <summary>
+        /// Writes out formatted neighborhood addresses
+        /// </summary>
+        /// <param name="list">List of neighborhoods</param>
         public static void Write(IEnumerable<CityClass> list)
         {
             foreach (CityClass neighborhood in list)
@@ -84,14 +111,24 @@ namespace LINQ
             Console.WriteLine();
         }
 
-        public static IEnumerable<CityClass> FilterNameless(List<CityClass> list)
+        /// <summary>
+        /// Removes neighborhoods with no name
+        /// </summary>
+        /// <param name="list">List of neighborhoods</param>
+        /// <returns>IEnumerable list of named neighborhoods</returns>
+        public static IEnumerable<CityClass> RemoveNameless(List<CityClass> list)
         {
             IEnumerable<CityClass> noNames = from neighborhood in list
-                                             where neighborhood.Neighborhood.Length == 0
+                                             where neighborhood.Neighborhood.Length != 0
                                              select neighborhood;
             return noNames;
         }
 
+        /// <summary>
+        /// Removes duplicate neighborhoods
+        /// </summary>
+        /// <param name="list">List of neighborhoods</param>
+        /// <returns>IEnumerable list of non-duplicate neighborhoods</returns>
         public static IEnumerable<CityClass> RemoveDupes(IEnumerable<CityClass> list)
         {
             String[] temp = new string[250];
@@ -108,10 +145,33 @@ namespace LINQ
                     neighborhood.Duplicate = true;
                 }
             }
-            IEnumerable<CityClass> noDupes = from neighborhood in list
-                                             where neighborhood.Duplicate == false
-                                             select neighborhood;
+            IEnumerable<CityClass> noDupes = list.Where(neighborhood => neighborhood.Neighborhood.Length != 0);
             return noDupes;
+        }
+
+        /// <summary>
+        /// Removes nameless and duplicate neighborhoods
+        /// </summary>
+        /// <param name="list">List of neighborhoods</param>
+        /// <returns>IEnumerable list of named, non-duplicate neighborhoods</returns>
+        public static IEnumerable<CityClass> RemoveNamelessAndDupes(IEnumerable<CityClass> list)
+        {
+            String[] temp = new string[250];
+            int counter = 0;
+            foreach (CityClass neighborhood in list)
+            {
+                if (!temp.Contains(neighborhood.Neighborhood))
+                {
+                    counter++;
+                    temp[counter] = neighborhood.Neighborhood;
+                }
+                else
+                {
+                    neighborhood.Duplicate = true;
+                }
+            }
+            IEnumerable<CityClass> noDupesOrNameless = list.Where(neighborhood => neighborhood.Neighborhood.Length != 0 && neighborhood.Duplicate == false);
+            return noDupesOrNameless;
         }
     }
 }
