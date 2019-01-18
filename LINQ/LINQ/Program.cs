@@ -3,22 +3,28 @@ using Newtonsoft.Json.Linq;
 using System.IO;
 using LINQ.classes;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LINQ
 {
     public class Program
     {
-        public static string dataPath = "C:/Users/Owner/codefellows/401/labs/Lab08-LINQ_In_Manhattan/data.json";
-
         static void Main(string[] args)
         {
-            List<CityClass> list = HandleJSON(GetJObject(dataPath));
+            List<CityClass> list = HandleJSON(GetJObject());
+            IEnumerable<CityClass> nameless = FilterNameless(list);
+            Console.WriteLine("All Manhattan Neighborhoods: ");
             Write(list);
+            Console.WriteLine("-----------------------------");
+            Console.WriteLine();
+            Console.WriteLine("All Nameless Manhattan Neighborhoods: ");
+            Console.WriteLine();
+            Write(nameless);
         }
 
-        public static JObject GetJObject(string path)
+        public static JObject GetJObject()
         {
-            JObject jObject = JObject.Parse(File.ReadAllText(@path));
+            JObject jObject = JObject.Parse(File.ReadAllText(@"C:/Users/Owner/codefellows/401/labs/Lab08-LINQ_In_Manhattan/data.json"));
             return jObject;
         }
 
@@ -72,10 +78,13 @@ namespace LINQ
             Console.WriteLine();
         }
 
-        //public static JObject filterWithoutNeighborhood(List<CityClass> name)
-        //{
-
-        //}
+        public static IEnumerable<CityClass> FilterNameless(List<CityClass> list)
+        {
+            IEnumerable<CityClass> noNames = from neighborhood in list
+                                             where neighborhood.Neighborhood.Length == 0
+                                             select neighborhood;
+            return noNames;
+        }
 
     }
 }
