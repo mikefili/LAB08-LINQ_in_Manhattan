@@ -2,34 +2,40 @@
 using Newtonsoft.Json.Linq;
 using System.IO;
 using LINQ.classes;
+using System.Collections.Generic;
 
 namespace LINQ
 {
     public class Program
     {
+
+
         static void Main(string[] args)
         {
-            HandleJSON();
+            string dataPath = "C:/Users/Owner/codefellows/401/labs/Lab08-LINQ_In_Manhattan/data.json";
+            HandleJSON(dataPath);
         }
 
-        public static JObject HandleJSON()
-        {
-            JObject o1 = JObject.Parse(File.ReadAllText(@"C:\Users\Owner\codefellows\401\labs\Lab08-LINQ_In_Manhattan\data.json"));
+        
 
-            JArray items = (JArray)o1["features"];
+        public static JObject HandleJSON(string path)
+        {
+            JObject jObject = JObject.Parse(File.ReadAllText(@path));
+
+            JArray items = (JArray)jObject["features"];
             int dataArr = items.Count;
 
             for (int i = 0; i < dataArr; i++)
             {
                 CityClass city = new CityClass()
                 {
-                    Address = (string)o1["features"][i]["properties"]["address"],
-                    City = (string)o1["features"][i]["properties"]["city"],
-                    State = (string)o1["features"][i]["properties"]["state"],
-                    Zip = (int)o1["features"][i]["properties"]["zip"],
-                    Borough = (string)o1["features"][i]["properties"]["borough"],
-                    Neighborhood = (string)o1["features"][i]["properties"]["neighborhood"],
-                    County = (string)o1["features"][i]["properties"]["county"]
+                    Address = (string)jObject["features"][i]["properties"]["address"],
+                    City = (string)jObject["features"][i]["properties"]["city"],
+                    State = (string)jObject["features"][i]["properties"]["state"],
+                    Zip = (int)jObject["features"][i]["properties"]["zip"],
+                    Borough = (string)jObject["features"][i]["properties"]["borough"],
+                    Neighborhood = (string)jObject["features"][i]["properties"]["neighborhood"],
+                    County = (string)jObject["features"][i]["properties"]["county"]
                 };
                 Console.WriteLine();
                 Console.WriteLine($"Address: {city.Address}");
@@ -39,7 +45,9 @@ namespace LINQ
                 Console.WriteLine($"County: {city.County}");
             }
             Console.WriteLine();
-            return o1;
+            return jObject;
         }
+
+        
     }
 }
