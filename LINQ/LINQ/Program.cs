@@ -13,15 +13,15 @@ namespace LINQ
         {
             List<CityClass> list = HandleJSON(GetJObject());
 
-            //Console.WriteLine("All Manhattan Neighborhoods: ");
-            //Write(list);
-            //Console.WriteLine("-----------------------------");
-            //Console.WriteLine();
+            Console.WriteLine("All Manhattan Neighborhoods: ");
+            Write(list);
+            Console.WriteLine("-----------------------------");
+            Console.WriteLine();
 
-            //IEnumerable<CityClass> nameless = RemoveNameless(list);
-            //Console.WriteLine("All Named Manhattan Neighborhoods: ");
-            //Write(nameless);
-            //Console.WriteLine("-----------------------------");
+            IEnumerable<CityClass> nameless = RemoveNameless(list);
+            Console.WriteLine("All Named Manhattan Neighborhoods: ");
+            Write(nameless);
+            Console.WriteLine("-----------------------------");
             //Console.WriteLine();
 
             IEnumerable<CityClass> noDuplicates = RemoveDupes(list);
@@ -30,9 +30,9 @@ namespace LINQ
             Console.WriteLine("-----------------------------");
             Console.WriteLine();
 
-            //IEnumerable<CityClass> bothFilters = RemoveNamelessAndDupes(list);
-            //Console.WriteLine("All Named Manhattan Neighborhoods (No Duplicates): ");
-            //Write(bothFilters);
+            IEnumerable<CityClass> bothFilters = RemoveNamelessAndDupes(list);
+            Console.WriteLine("All Named Manhattan Neighborhoods (No Duplicates): ");
+            Write(bothFilters);
         }
 
         /// <summary>
