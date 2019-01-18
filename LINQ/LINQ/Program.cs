@@ -12,7 +12,7 @@ namespace LINQ
         static void Main(string[] args)
         {
             List<CityClass> list = HandleJSON(GetJObject());
-            
+
             Console.WriteLine("All Manhattan Neighborhoods: ");
             Write(list);
             Console.WriteLine("-----------------------------");
@@ -20,22 +20,19 @@ namespace LINQ
 
             IEnumerable<CityClass> nameless = RemoveNameless(list);
             Console.WriteLine("All Named Manhattan Neighborhoods: ");
-            Console.WriteLine();
             Write(nameless);
             Console.WriteLine("-----------------------------");
             Console.WriteLine();
 
             IEnumerable<CityClass> noDuplicates = RemoveDupes(list);
             Console.WriteLine("All Manhattan Neighborhoods (No Duplicates): ");
-            Console.WriteLine();
             Write(noDuplicates);
             Console.WriteLine("-----------------------------");
             Console.WriteLine();
 
             IEnumerable<CityClass> bothFilters = RemoveNamelessAndDupes(list);
             Console.WriteLine("All Named Manhattan Neighborhoods (No Duplicates): ");
-            Console.WriteLine();
-            Write(noDuplicates);
+            Write(bothFilters);
         }
 
         /// <summary>
